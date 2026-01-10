@@ -1,3 +1,6 @@
+"use client";
+
+import { useDrag } from "react-dnd";
 import { Inquiry } from "@/interfaces/inquiry";
 import { formatRelativeDate } from "@/lib/date-utils";
 
@@ -8,11 +11,20 @@ interface InquiryCardProps {
 export default function InquiryCard({ inquiry }: InquiryCardProps) {
   const isHighValue = inquiry.potentialValue > 50000;
 
+  const [{ isDragging }, drag] = useDrag({
+    type: "inquiry",
+    item: { id: inquiry.id, phase: inquiry.phase },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
   return (
     <div
-      className={`bg-white rounded-lg p-3 sm:p-4 border ${
+      ref={drag as any}
+      className={`bg-white rounded-xl p-3 sm:p-4 border cursor-move transition-all duration-200 shadow-sm ${
         isHighValue ? "border-yellow-400" : "border-gray-300"
-      }`}
+      } ${isDragging ? "opacity-50" : ""}`}
     >
       <div className="flex justify-between items-center mb-3 gap-2">
         <h3 className="text-base sm:text-lg font-semibold text-gray-800 truncate">

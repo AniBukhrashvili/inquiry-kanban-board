@@ -1,13 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Inquiry } from "@/interfaces/inquiry";
+import { useEffect } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { ApiResponse } from "@/interfaces/api";
 import { get } from "@/lib/fetcher";
-import InquiryCard from "@/components/InquiryCard";
+import KanbanBoard from "@/components/KanbanBoard";
+import { useInquiryStore } from "@/store/inquiryStore";
 
 export default function Home() {
-  const [inquiries, setInquiries] = useState<Inquiry[]>([]);
+  const setInquiries = useInquiryStore((state) => state.setInquiries);
 
   useEffect(() => {
     const fetchInquiries = async () => {
@@ -20,21 +22,19 @@ export default function Home() {
     };
 
     fetchInquiries();
-  }, []);
+  }, [setInquiries]);
 
   return (
-    <main className="min-h-screen py-4 sm:py-6 lg:py-8">
-      <div className="container">
-        <h1 className="text-4xl font-bold mb-8 text-center">
-          Inquiry Kanban Board
-        </h1>
+    <DndProvider backend={HTML5Backend}>
+      <main className="min-h-screen py-4 sm:py-6 lg:py-8">
+        <div className="container mx-auto px-4">
+          <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">
+            Inquiry Kanban Board
+          </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {inquiries.map((inquiry) => (
-            <InquiryCard key={inquiry.id} inquiry={inquiry} />
-          ))}
+          <KanbanBoard />
         </div>
-      </div>
-    </main>
+      </main>
+    </DndProvider>
   );
 }

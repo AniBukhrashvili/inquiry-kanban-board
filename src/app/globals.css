@@ -13,6 +13,6 @@ body {
 
 @layer components {
   .container {
-    @apply w-full mx-auto px-4 sm:px-6 lg:px-8 xl:max-w-[1244px] 2xl:max-w-[1344px];
+    @apply w-full mx-auto px-4 sm:px-6 lg:px-8 max-w-screen-2xl;
   }
 }
