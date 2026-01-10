@@ -10,6 +10,7 @@ interface InquiryColumnProps {
   phase: InquiryPhase;
   title: string;
   inquiries: Inquiry[];
+  onCardClick?: (inquiry: Inquiry) => void;
 }
 
 const PHASE_COLORS: Record<InquiryPhase, string> = {
@@ -23,14 +24,15 @@ export default function InquiryColumn({
   phase,
   title,
   inquiries,
+  onCardClick,
 }: InquiryColumnProps) {
-  const moveInquiry = useInquiryStore((state) => state.moveInquiry);
+  const updateInquiry = useInquiryStore((state) => state.updateInquiry);
 
   const [{ isOver, canDrop }, drop] = useDrop({
     accept: "inquiry",
     drop: async (item: { id: string; phase: InquiryPhase }) => {
       if (item.phase !== phase) {
-        await moveInquiry(item.id, item.phase, phase);
+        await updateInquiry(item.id, { phase });
       }
     },
     collect: (monitor) => ({
@@ -73,7 +75,11 @@ export default function InquiryColumn({
 
       <div className="space-y-3 min-h-[200px]">
         {inquiries.map((inquiry) => (
-          <InquiryCard key={inquiry.id} inquiry={inquiry} />
+          <InquiryCard
+            key={inquiry.id}
+            inquiry={inquiry}
+            onCardClick={onCardClick}
+          />
         ))}
         {inquiries.length === 0 && (
           <div className="text-center text-gray-400 py-8 text-sm">

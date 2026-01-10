@@ -3,41 +3,48 @@ import { Inquiry } from "@/interfaces/inquiry";
 import { InquiryPhase } from "@/types/inquiry";
 import { patch } from "@/lib/fetcher";
 
+type UpdatableInquiryFields = Omit<Inquiry, "id" | "createdAt">;
+
 interface InquiryStore {
   inquiries: Inquiry[];
   setInquiries: (inquiries: Inquiry[]) => void;
-  moveInquiry: (
+  updateInquiry: (
     inquiryId: string,
-    fromPhase: InquiryPhase,
-    toPhase: InquiryPhase
+    updates: Partial<UpdatableInquiryFields>
   ) => Promise<void>;
 }
 
-export const useInquiryStore = create<InquiryStore>((set) => ({
+export const useInquiryStore = create<InquiryStore>((set, get) => ({
   inquiries: [],
   setInquiries: (inquiries) => set({ inquiries }),
-  moveInquiry: async (inquiryId, fromPhase, toPhase) => {
-    if (fromPhase === toPhase) return;
+  updateInquiry: async (inquiryId, updates) => {
+    const state = get();
+    const originalInquiry = state.inquiries.find((inq) => inq.id === inquiryId);
+    if (!originalInquiry) {
+      throw new Error(`Inquiry with id ${inquiryId} not found`);
+    }
+
+    const updatePayload = {
+      ...updates,
+      updatedAt: new Date().toISOString(),
+    };
 
     set((state) => ({
       inquiries: state.inquiries.map((inquiry) =>
-        inquiry.id === inquiryId && inquiry.phase === fromPhase
-          ? { ...inquiry, phase: toPhase, updatedAt: new Date().toISOString() }
-          : inquiry
+        inquiry.id === inquiryId ? { ...inquiry, ...updatePayload } : inquiry
       ),
     }));
 
     try {
-      await patch(`/api/inquiries/${inquiryId}`, { phase: toPhase });
+      await patch(`/api/inquiries/${inquiryId}`, updates);
     } catch (error) {
-      console.error("Failed to move inquiry:", error);
+      console.error("Failed to update inquiry:", error);
       set((state) => ({
         inquiries: state.inquiries.map((inquiry) =>
-          inquiry.id === inquiryId && inquiry.phase === toPhase
-            ? { ...inquiry, phase: fromPhase }
-            : inquiry
+          inquiry.id === inquiryId ? originalInquiry : inquiry
         ),
       }));
+      throw error;
     }
   },
 }));

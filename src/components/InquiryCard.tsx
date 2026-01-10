@@ -3,12 +3,17 @@
 import { useDrag } from "react-dnd";
 import { Inquiry } from "@/interfaces/inquiry";
 import { formatRelativeDate } from "@/lib/date-utils";
+import Badge from "./ui/Badge";
 
 interface InquiryCardProps {
   inquiry: Inquiry;
+  onCardClick?: (inquiry: Inquiry) => void;
 }
 
-export default function InquiryCard({ inquiry }: InquiryCardProps) {
+export default function InquiryCard({
+  inquiry,
+  onCardClick,
+}: InquiryCardProps) {
   const isHighValue = inquiry.potentialValue > 50000;
 
   const [{ isDragging }, drag] = useDrag({
@@ -19,22 +24,25 @@ export default function InquiryCard({ inquiry }: InquiryCardProps) {
     }),
   });
 
+  const handleClick = (e: React.MouseEvent) => {
+    if (!isDragging && onCardClick) {
+      onCardClick(inquiry);
+    }
+  };
+
   return (
     <div
       ref={drag as any}
-      className={`bg-white rounded-xl p-3 sm:p-4 border cursor-move transition-all duration-200 shadow-sm ${
+      onClick={handleClick}
+      className={`bg-white rounded-xl p-3 sm:p-4 border transition-all duration-200 shadow-sm ${
         isHighValue ? "border-yellow-400" : "border-gray-300"
-      } ${isDragging ? "opacity-50" : ""}`}
+      } ${isDragging ? "opacity-50" : "cursor-pointer hover:shadow-md"}`}
     >
       <div className="flex justify-between items-center mb-3 gap-2">
         <h3 className="text-base sm:text-lg font-semibold text-gray-800 truncate">
           {inquiry.clientName}
         </h3>
-        {isHighValue && (
-          <span className="px-2 py-1 text-xs font-semibold bg-yellow-400 text-yellow-700 rounded-full whitespace-nowrap">
-            High Value
-          </span>
-        )}
+        {isHighValue && <Badge title="High Value" />}
       </div>
 
       <div className="space-y-2">
