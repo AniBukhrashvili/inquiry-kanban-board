@@ -92,7 +92,7 @@ export default function InquiryColumn({
 
         {inquiries.length === 0 && !isLoading && (
           <div className="text-center text-gray-400 py-8 text-sm">
-            Drop inquiries here
+            No inquiries found
           </div>
         )}
       </div>
