@@ -16,3 +16,15 @@ body {
     @apply w-full mx-auto px-4 sm:px-6 lg:px-8 max-w-screen-2xl;
   }
 }
+
+@layer utilities {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+}

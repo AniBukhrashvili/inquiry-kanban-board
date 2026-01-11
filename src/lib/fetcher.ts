@@ -20,8 +20,24 @@ export async function fetcher<T>(
   return response.json();
 }
 
-export async function get<T>(url: string): Promise<T> {
-  return fetcher<T>(url, { method: "GET" });
+export async function get<T>(
+  url: string,
+  params?: Record<string, string | number | undefined>
+): Promise<T> {
+  let finalUrl = url;
+  if (params) {
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        searchParams.append(key, String(value));
+      }
+    });
+    const queryString = searchParams.toString();
+    if (queryString) {
+      finalUrl = `${url}?${queryString}`;
+    }
+  }
+  return fetcher<T>(finalUrl, { method: "GET" });
 }
 
 export async function patch<T>(url: string, data?: unknown): Promise<T> {
