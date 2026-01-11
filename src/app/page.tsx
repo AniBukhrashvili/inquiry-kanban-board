@@ -5,6 +5,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { ApiResponse } from "@/interfaces/api";
 import { get } from "@/lib/fetcher";
+import Header from "@/components/Header";
 import KanbanBoard from "@/components/KanbanBoard";
 import FilterPanel from "@/components/FilterPanel";
 import { useInquiryStore } from "@/store/inquiryStore";
@@ -39,11 +40,9 @@ export default function Home() {
 
   return (
     <DndProvider backend={HTML5Backend}>
+      <Header />
       <main className="min-h-screen py-4 sm:py-6 lg:py-8">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">
-            Inquiry Kanban Board
-          </h1>
           <FilterPanel filters={filters} onFiltersChange={setFilters} />
           <KanbanBoard />
         </div>
