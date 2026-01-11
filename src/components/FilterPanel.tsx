@@ -78,7 +78,7 @@ export default function FilterPanel({
   const hasActiveFilters = activeFilterCount > 0;
 
   return (
-    <div className="rounded-xl border border-gray-300 shadow-sm p-4 sm:p-6 mb-6">
+    <div className="rounded-xl border border-gray-300 shadow-sm p-4 sm:p-6 mb-6 mx-2">
       <div className="flex items-center justify-between mb-4 gap-4">
         <h2 className="text-xl font-semibold text-gray-800">Filters</h2>
         <div className="flex items-center gap-3">

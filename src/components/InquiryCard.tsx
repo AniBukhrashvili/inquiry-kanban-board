@@ -32,7 +32,7 @@ export default function InquiryCard({
 
   return (
     <div
-      ref={drag as any}
+      ref={drag as unknown as React.Ref<HTMLDivElement>}
       onClick={handleClick}
       className={`bg-white rounded-xl p-3 sm:p-4 border transition-all duration-200 shadow-sm ${
         isHighValue ? "border-yellow-400" : "border-gray-300"

@@ -53,7 +53,7 @@ export default function InquiryColumn({
 
   return (
     <div
-      ref={drop as any}
+      ref={drop as unknown as React.Ref<HTMLDivElement>}
       className={`flex-shrink-0 w-80 rounded-xl border bg-slate-50 p-2 transition-all duration-200 ${
         isActive ? "ring-2 ring-blue-300" : ""
       }`}
