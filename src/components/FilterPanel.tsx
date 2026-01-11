@@ -78,27 +78,24 @@ export default function FilterPanel({
   const hasActiveFilters = activeFilterCount > 0;
 
   return (
-    <div className="rounded-xl border border-gray-300 shadow-sm p-4 sm:p-6 mb-6 mx-2">
-      <div className="flex items-center justify-between mb-4 gap-4">
-        <h2 className="text-xl font-semibold text-gray-800">Filters</h2>
-        <div className="flex items-center gap-3">
-          {hasActiveFilters && (
-            <span className="text-sm text-gray-600">
-              {activeFilterCount} active filter
-              {activeFilterCount !== 1 ? "s" : ""}
-            </span>
-          )}
-          {hasActiveFilters && (
-            <button
-              type="button"
-              aria-label="Clear all filters"
-              onClick={handleClearFilters}
-              className="px-4 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
-            >
-              Clear All
-            </button>
-          )}
-        </div>
+    <div className="rounded-xl mx-3 mb-8">
+      <div className="flex items-center justify-end mb-4 gap-4">
+        {hasActiveFilters && (
+          <span className="text-sm text-gray-600">
+            {activeFilterCount} active filter
+            {activeFilterCount !== 1 ? "s" : ""}
+          </span>
+        )}
+        {hasActiveFilters && (
+          <button
+            type="button"
+            aria-label="Clear all filters"
+            onClick={handleClearFilters}
+            className="px-4 py-1.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+          >
+            Clear All
+          </button>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
