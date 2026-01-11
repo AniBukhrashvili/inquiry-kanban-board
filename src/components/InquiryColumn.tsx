@@ -11,6 +11,7 @@ interface InquiryColumnProps {
   title: string;
   inquiries: Inquiry[];
   onCardClick?: (inquiry: Inquiry) => void;
+  isLoading?: boolean;
 }
 
 const PHASE_COLORS: Record<InquiryPhase, string> = {
@@ -25,6 +26,7 @@ export default function InquiryColumn({
   title,
   inquiries,
   onCardClick,
+  isLoading = false,
 }: InquiryColumnProps) {
   const updateInquiry = useInquiryStore((state) => state.updateInquiry);
 
@@ -81,7 +83,14 @@ export default function InquiryColumn({
             onCardClick={onCardClick}
           />
         ))}
-        {inquiries.length === 0 && (
+
+        {inquiries.length === 0 && isLoading && (
+          <div className="flex items-center justify-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-400"></div>
+          </div>
+        )}
+
+        {inquiries.length === 0 && !isLoading && (
           <div className="text-center text-gray-400 py-8 text-sm">
             Drop inquiries here
           </div>

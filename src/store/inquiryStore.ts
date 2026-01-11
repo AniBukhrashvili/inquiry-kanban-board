@@ -7,8 +7,10 @@ type UpdatableInquiryFields = Omit<Inquiry, "id" | "createdAt">;
 interface InquiryStore {
   inquiries: Inquiry[];
   filters: InquiryFilters;
+  isLoading: boolean;
   setInquiries: (inquiries: Inquiry[]) => void;
   setFilters: (filters: InquiryFilters) => void;
+  setLoading: (isLoading: boolean) => void;
   updateInquiry: (
     inquiryId: string,
     updates: Partial<UpdatableInquiryFields>
@@ -18,8 +20,10 @@ interface InquiryStore {
 export const useInquiryStore = create<InquiryStore>((set, get) => ({
   inquiries: [],
   filters: {},
+  isLoading: false,
   setInquiries: (inquiries) => set({ inquiries }),
   setFilters: (filters) => set({ filters }),
+  setLoading: (isLoading) => set({ isLoading }),
   updateInquiry: async (inquiryId, updates) => {
     const state = get();
     const originalInquiry = state.inquiries.find((inq) => inq.id === inquiryId);

@@ -16,6 +16,7 @@ const PHASES: { phase: InquiryPhase; title: string }[] = [
 
 export default function KanbanBoard() {
   const inquiries = useInquiryStore((state) => state.inquiries);
+  const isLoading = useInquiryStore((state) => state.isLoading);
   const [selectedInquiry, setSelectedInquiry] = useState<Inquiry | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -44,6 +45,7 @@ export default function KanbanBoard() {
               title={title}
               inquiries={getInquiriesByPhase(phase)}
               onCardClick={handleCardClick}
+              isLoading={isLoading}
             />
           ))}
         </div>

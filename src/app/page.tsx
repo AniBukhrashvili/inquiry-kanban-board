@@ -13,9 +13,11 @@ export default function Home() {
   const setInquiries = useInquiryStore((state) => state.setInquiries);
   const filters = useInquiryStore((state) => state.filters);
   const setFilters = useInquiryStore((state) => state.setFilters);
+  const setLoading = useInquiryStore((state) => state.setLoading);
 
   useEffect(() => {
     const fetchInquiries = async () => {
+      setLoading(true);
       try {
         const params: Record<string, string | number | undefined> = {};
         if (filters.clientName) params.clientName = filters.clientName;
@@ -27,11 +29,13 @@ export default function Home() {
         setInquiries(result.data);
       } catch (err) {
         console.error("Failed to fetch inquiries:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchInquiries();
-  }, [setInquiries, filters]);
+  }, [setInquiries, setLoading, filters]);
 
   return (
     <DndProvider backend={HTML5Backend}>
