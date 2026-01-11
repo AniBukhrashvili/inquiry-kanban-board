@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { ApiResponse } from "@/interfaces/api";
 import { get } from "@/lib/fetcher";
 import Header from "@/components/Header";
@@ -39,7 +37,7 @@ export default function Home() {
   }, [setInquiries, setLoading, filters]);
 
   return (
-    <DndProvider backend={HTML5Backend}>
+    <>
       <Header />
       <main className="min-h-screen py-4 sm:py-6 lg:py-8">
         <div className="container mx-auto px-4">
@@ -47,6 +45,6 @@ export default function Home() {
           <KanbanBoard />
         </div>
       </main>
-    </DndProvider>
+    </>
   );
 }

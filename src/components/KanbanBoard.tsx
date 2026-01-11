@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { InquiryPhase } from "@/types/inquiry";
 import { Inquiry } from "@/interfaces/inquiry";
 import { useInquiryStore } from "@/store/inquiryStore";
@@ -35,7 +37,7 @@ export default function KanbanBoard() {
   };
 
   return (
-    <>
+    <DndProvider backend={HTML5Backend}>
       <div className="w-full overflow-x-auto pb-4">
         <div className="flex gap-4 justify-center min-w-max p-2">
           {PHASES.map(({ phase, title }) => (
@@ -55,6 +57,6 @@ export default function KanbanBoard() {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
       />
-    </>
+    </DndProvider>
   );
 }
